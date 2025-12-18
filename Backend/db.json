@@ -1,0 +1,22 @@
+{
+  "user": [
+    {
+      "id": "0",
+      "name": "Gokul",
+      "totalMark": "500",
+      "average": "100"
+    },
+    {
+      "id": 1,
+      "name": "bala",
+      "totalMark": 495,
+      "average": 99
+    },
+    {
+      "id": 2,
+      "name": "ram",
+      "totalMark": 440,
+      "average": 88
+    }
+  ]
+}

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student_Management_System</title>
+    <style>
+        * {
+            margin: 0%;
+            padding: 0%;
+        }
+
+        .main-container {
+            width: 100%;
+            height: 100vh;
+            max-height: max-content;
+            background-image: url(./v915-wit-009-g.jpg);
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        .mark-list {
+            width: 100%;
+            height: 100vh;
+            opacity: 0.8;
+            /* background-color: #f3902c; */
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+
+        form {
+            width: 50%;
+            margin: auto;
+            height: 100%;
+            background-color: #fffdf8;
+            opacity: 0.9;
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+        }
+
+        .mark {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        button {
+            background-color: #F2883B;
+            border: none;
+            color: white;
+            font-weight: bold;
+            padding: 15px 30px;
+            border-radius: 5px;
+        }
+
+        .header-title {
+            font-size: xx-large;
+            font-weight: bold;
+            color: #F2883B;
+        }
+
+        label {
+            font-size: large;
+            font-weight: bold;
+            margin-right: 30px;
+            color: #5a5a5a;
+        }
+
+        input {
+            padding: 10px;
+            border: 1px solid#e7a878;
+            font-size: large;
+            color: #5a5a5a;
+        }
+
+        input:hover {
+            border: 1px solid#ff6a00;
+            background-color: #fff7f0;
+        }
+
+        input:focus {
+            outline: none;
+        }
+
+        .mark-list {
+            display: flex;
+            flex-direction: column;
+
+        }
+
+        .marklist {
+            display: flex;
+            width: 100%;
+            height: 10%;
+            background-color: #f3902c;
+
+        }
+
+        .id,
+        .tot,
+        .avr,
+        .names {
+            width: 25%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            border-left: 1px solid black;
+            border-bottom: 1px solid rgb(185, 185, 185);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-container">
+        <form class="main-form">
+            <div class="mark header-title">✍️ Student Management System</div>
+            <div class="mark name">
+                <label for="">🧑‍🏫 Student Name :</label>
+                <input type="text" class="input-name" required>
+            </div>
+            <div class="mark mark1">
+                <label for="">📋Subject 1 Mark :</label>
+                <input type="number" maxlength="3" class="input-mark-1" required>
+            </div>
+            <div class="mark mark2">
+                <label for="">📋Subject 2 Mark :</label>
+                <input type="number" maxlength="3" class="input-mark-2" required>
+            </div>
+            <div class="mark mark3">
+                <label for="">📋Subject 3 Mark :</label>
+                <input type="number" maxlength="3" class="input-mark-3" required>
+            </div>
+            <div class="mark mark4">
+                <label for="">📋Subject 4 Mark :</label>
+                <input type="number" maxlength="3" class="input-mark-4" required>
+            </div>
+            <div class="mark mark5">
+                <label for="">📋Subject 5 Mark :</label>
+                <input type="number" maxlength="3" class="input-mark-5" required>
+            </div>
+            <div class="mark footer-btn"><button type="submit" class="sub-btn">Submit</button></div>
+
+        </form>
+    </div>
+    <div class="mark-list">
+        <div class="marklist">
+            <div class="id">ID</div>
+            <div class="names">STUDENT NAME</div>
+            <div class="tot">TOTAL MARK</div>
+            <div class="avr">AVERAGE MARK</div>
+        </div>
+
+    </div>
+
+
+
+    <script>
+
+        let form = document.querySelector("form")
+        let name = document.querySelector(".input-name")
+        let mark1 = document.querySelector(".input-mark-1")
+        let mark2 = document.querySelector(".input-mark-2")
+        let mark3 = document.querySelector(".input-mark-3")
+        let mark4 = document.querySelector(".input-mark-4")
+        let mark5 = document.querySelector(".input-mark-5")
+        let marklist = document.querySelector(".mark-list")
+
+
+        let count=0
+        let nxhr = new XMLHttpRequest()
+        nxhr.open("GET", "http://localhost:3000/user")
+        nxhr.onload = () => {
+            console.log(nxhr.response);
+            let obj = (JSON.parse(nxhr.response))
+            console.log(obj);
+
+          if (obj.length > 0) {
+        count = Number(obj[obj.length - 1].id);
+         }
+ 
+            obj.forEach((element) => {
+                let div = document.createElement("div")
+                div.className = "marklist"
+
+                div.innerHTML = `
+                     <div class="id">${element.id}</div>
+                     <div class="names">${element.name}</div>
+                     <div class="tot">${element.totalMark}</div>
+                     <div class="avr">${element.average}</div>
+                    `
+                    marklist.append(div)
+            })
+
+        }
+        nxhr.send()
+
+
+
+        form.addEventListener("submit", (e) => {
+            e.preventDefault()
+
+            let m1 = Number(mark1.value);
+            let m2 = Number(mark2.value);
+            let m3 = Number(mark3.value);
+            let m4 = Number(mark4.value);
+            let m5 = Number(mark5.value);
+
+            let total = m1 + m2 + m3 + m4 + m5;
+            let avr = total / 5;
+            count++
+            let xhr = new XMLHttpRequest()
+            xhr.open("POST", "http://localhost:3000/user")
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onload = () => {
+                console.log(xhr.response);
+            }
+            let data = {
+                id:count,
+                name: name.value,
+                totalMark: total,
+                average: avr
+            };
+
+            xhr.send(JSON.stringify(data))
+            
+        })
+
+
+    </script>
+</body>
+
+</html>
