@@ -44,6 +44,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+
         }
 
         button {
@@ -101,8 +102,9 @@
         .id,
         .tot,
         .avr,
-        .names {
-            width: 25%;
+        .names,
+        .grade {
+            width: 20%;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -122,24 +124,26 @@
                 <input type="text" class="input-name" required>
             </div>
             <div class="mark mark1">
-                <label for="">📋Subject 1 Mark :</label>
-                <input type="number" maxlength="3" class="input-mark-1" required>
+                <label>📋Subject 1 Mark :</label>
+                <input type="number" class="input-mark-1" required>
+
             </div>
+
             <div class="mark mark2">
                 <label for="">📋Subject 2 Mark :</label>
-                <input type="number" maxlength="3" class="input-mark-2" required>
+                <input type="number" class="input-mark-2" required>
             </div>
             <div class="mark mark3">
                 <label for="">📋Subject 3 Mark :</label>
-                <input type="number" maxlength="3" class="input-mark-3" required>
+                <input type="number" class="input-mark-3" required>
             </div>
             <div class="mark mark4">
                 <label for="">📋Subject 4 Mark :</label>
-                <input type="number" maxlength="3" class="input-mark-4" required>
+                <input type="number" class="input-mark-4" required>
             </div>
             <div class="mark mark5">
                 <label for="">📋Subject 5 Mark :</label>
-                <input type="number" maxlength="3" class="input-mark-5" required>
+                <input type="number" class="input-mark-5" required>
             </div>
             <div class="mark footer-btn"><button type="submit" class="sub-btn">Submit</button></div>
 
@@ -151,6 +155,7 @@
             <div class="names">STUDENT NAME</div>
             <div class="tot">TOTAL MARK</div>
             <div class="avr">AVERAGE MARK</div>
+            <div class="grade">GRADE</div>
         </div>
 
     </div>
@@ -167,9 +172,23 @@
         let mark4 = document.querySelector(".input-mark-4")
         let mark5 = document.querySelector(".input-mark-5")
         let marklist = document.querySelector(".mark-list")
+        mark1.addEventListener("input", () => validateMark(mark1));
+        mark2.addEventListener("input", () => validateMark(mark2));
+        mark3.addEventListener("input", () => validateMark(mark3));
+        mark4.addEventListener("input", () => validateMark(mark4));
+        mark5.addEventListener("input", () => validateMark(mark5));
+
+        function validateMark(input) {
+            let value = Number(input.value);
+
+            if (value > 100) {
+                alert("invald mark")
+                input.value = ""
+            }
+        }
 
 
-        let count=0
+        let count = 0
         let nxhr = new XMLHttpRequest()
         nxhr.open("GET", "http://localhost:3000/user")
         nxhr.onload = () => {
@@ -177,21 +196,22 @@
             let obj = (JSON.parse(nxhr.response))
             console.log(obj);
 
-          if (obj.length > 0) {
-        count = Number(obj[obj.length - 1].id);
-         }
- 
+            if (obj.length > 0) {
+                count = Number(obj[obj.length - 1].id);
+            }
+
             obj.forEach((element) => {
                 let div = document.createElement("div")
                 div.className = "marklist"
 
                 div.innerHTML = `
-                     <div class="id">${element.id}</div>
-                     <div class="names">${element.name}</div>
-                     <div class="tot">${element.totalMark}</div>
-                     <div class="avr">${element.average}</div>
-                    `
-                    marklist.append(div)
+                        <div class="id">${element.id}</div>
+                        <div class="names">${element.name}</div>
+                        <div class="tot">${element.totalMark}</div>
+                        <div class="avr">${element.average}</div>
+                         <div class="grade">${element.grade}</div>
+                        `
+                marklist.append(div)
             })
 
         }
@@ -210,6 +230,15 @@
 
             let total = m1 + m2 + m3 + m4 + m5;
             let avr = total / 5;
+
+            function getGrade(avg) {
+                if (avg >= 90) return "A";
+                else if (avg >= 75) return "B";
+                else if (avg >= 60) return "C";
+                else if (avg >= 40) return "D";
+                else return "F";
+            }
+            let grade = getGrade(avr);
             count++
             let xhr = new XMLHttpRequest()
             xhr.open("POST", "http://localhost:3000/user")
@@ -218,14 +247,14 @@
                 console.log(xhr.response);
             }
             let data = {
-                id:count,
+                id: count,
                 name: name.value,
                 totalMark: total,
-                average: avr
+                average: avr,
+                grade: grade
             };
-
             xhr.send(JSON.stringify(data))
-            
+
         })
 
 

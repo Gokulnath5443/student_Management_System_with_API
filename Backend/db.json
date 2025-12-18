@@ -4,19 +4,22 @@
       "id": "0",
       "name": "Gokul",
       "totalMark": "500",
-      "average": "100"
+      "average": "100",
+      "grade": "A"
     },
     {
       "id": 1,
       "name": "bala",
       "totalMark": 495,
-      "average": 99
+      "average": 99,
+      "grade": "A"
     },
     {
       "id": 2,
-      "name": "ram",
-      "totalMark": 440,
-      "average": 88
+      "name": "Ram",
+      "totalMark": 110,
+      "average": 22,
+      "grade": "F"
     }
   ]
 }
